@@ -54,6 +54,7 @@ public class Competition {
     private int totalMember;
 
     @OneToMany(mappedBy = "competition")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Ranking> rankings;
 
     @OneToMany(mappedBy = "competition")

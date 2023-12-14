@@ -27,6 +27,11 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
+    public Competition addCompetition(Competition competition) {
+        return competitionRepository.save(competition);
+    }
+
+    @Override
     public void deleteCompetition(Long id) {
         getCompetitionById(id);
         competitionRepository.deleteById(id);
