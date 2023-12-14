@@ -1,9 +1,11 @@
 package com.app.aftas.controllers;
 
 import com.app.aftas.dto.FishDTO;
+import com.app.aftas.dto.RankingDTO;
 import com.app.aftas.handlers.response.ResponseMessage;
 import com.app.aftas.models.Competition;
 import com.app.aftas.models.Fish;
+import com.app.aftas.models.Ranking;
 import com.app.aftas.services.CompetitionService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +63,11 @@ public class CompetitionController {
         }else {
             return ResponseMessage.created(competition1, "Competition updated successfully");
         }
+    }
+    @PostMapping("/register-member")
+    public ResponseEntity registerMemberForCompetition(@Valid @RequestBody RankingDTO registerMember) {
+        Ranking ranking = competitionService.registerMemberForCompetition(registerMember.toRanking());
+        return ResponseMessage.ok(ranking,"Member registered successfully");
     }
     @DeleteMapping("/{id}")
     public void deleteCompetition(@PathVariable Long id) {
