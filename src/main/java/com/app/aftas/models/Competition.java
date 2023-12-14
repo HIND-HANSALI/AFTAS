@@ -1,6 +1,8 @@
 package com.app.aftas.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -54,7 +56,7 @@ public class Competition {
     private int totalMember;
 
     @OneToMany(mappedBy = "competition")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Ranking> rankings;
 
     @OneToMany(mappedBy = "competition")

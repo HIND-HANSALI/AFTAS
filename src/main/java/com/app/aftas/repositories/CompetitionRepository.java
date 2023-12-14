@@ -7,5 +7,5 @@ import java.time.LocalDate;
 
 public interface CompetitionRepository extends JpaRepository<Competition, Long> {
 
-//    Competition findByDate(LocalDate date);
+    Competition findByDate(LocalDate date);
 }
