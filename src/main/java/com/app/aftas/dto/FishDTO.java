@@ -15,6 +15,7 @@ public record FishDTO(
 
     @Column(unique = true)
     String name,
+
     @NotNull(message = "Average weight is required")
     @Range(min = 0, max = 1000, message = "Weight must be between 0 and 1000")
     @Positive(message = "Weight must be greater than 0")

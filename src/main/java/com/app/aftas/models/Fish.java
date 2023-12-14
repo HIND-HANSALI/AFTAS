@@ -31,6 +31,7 @@ public class Fish{
     @OneToMany(mappedBy = "fish")
     private List<Hunting> huntings;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Level level;
+//    (fetch = FetchType.EAGER)
 }

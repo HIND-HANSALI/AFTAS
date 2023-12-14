@@ -1,9 +1,10 @@
 package com.app.aftas.services;
 
 import com.app.aftas.models.Fish;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface FishService {
 
     Fish getFishById(Long id);
