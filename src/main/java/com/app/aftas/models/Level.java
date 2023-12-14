@@ -24,10 +24,11 @@ public class Level {
 
     @NotNull(message = "Point cannot be null")
     @Min(value = 0, message = "Point must be greater than 0")
-//    @Column(unique = true)
+    @Column(unique = true)
     private int points;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+
     @OneToMany(mappedBy = "level")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Fish> fishes;
 }
