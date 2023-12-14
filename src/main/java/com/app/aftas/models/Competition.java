@@ -59,7 +59,7 @@ public class Competition {
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Ranking> rankings;
 
-    @OneToMany(mappedBy = "competition")
+    @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL)
     private List<Hunting> huntings;
 
 

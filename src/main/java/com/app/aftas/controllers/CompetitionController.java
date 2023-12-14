@@ -52,6 +52,16 @@ public class CompetitionController {
             return ResponseMessage.created(competitionC, "Competition created successfully");
         }
     }
+    @PutMapping("/{id}")
+    public ResponseEntity updateCompetition(@RequestBody Competition competition, @PathVariable Long id) {
+        System.out.println(competition);
+        Competition competition1 = competitionService.updateCompetition(competition, id);
+        if(competition1 == null) {
+            return ResponseMessage.badRequest("Competition not updated");
+        }else {
+            return ResponseMessage.created(competition1, "Competition updated successfully");
+        }
+    }
     @DeleteMapping("/{id}")
     public void deleteCompetition(@PathVariable Long id) {
         competitionService.deleteCompetition(id);
