@@ -2,6 +2,7 @@ package com.app.aftas.dto;
 
 import com.app.aftas.enums.IdentityDocumentType;
 import com.app.aftas.models.Member;
+import jakarta.persistence.Column;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
@@ -27,7 +28,9 @@ public record MemberDto (
         String nationality,
         @NotNull(message = "Identity number cannot be null")
         @Size(min = 2, max = 50, message = "Identity number must be between 2 and 50 characters")
-         String identityNumber,
+        @Column(unique = true)
+        String identityNumber,
+
 
         int membershipNumber,
         IdentityDocumentType identityDocumentType

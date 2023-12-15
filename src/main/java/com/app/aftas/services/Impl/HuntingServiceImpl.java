@@ -66,6 +66,25 @@ public class HuntingServiceImpl implements HuntingService {
             return huntingRepository.save(hunting);
         }
     }
+    @Override
+    public Hunting getHuntingById(Long id) {
+        return huntingRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Hunting id " + id + " not found"));
+    }
+
+    @Override
+    public Hunting updateHunting(Hunting hunting, Long id) {
+        Hunting existingHunting = getHuntingById(id);
+//        existingHunting.setFish(hunting.getFish());
+//        existingHunting.setMember(hunting.getMember());
+//        existingHunting.setCompetition(hunting.getCompetition());
+        existingHunting.setNumberOfFish(hunting.getNumberOfFish());
+        return huntingRepository.save(existingHunting);
+    }
+
+    @Override
+    public void deleteHunting(Long id) {
+        huntingRepository.deleteById(id);
+    }
 
 
 
