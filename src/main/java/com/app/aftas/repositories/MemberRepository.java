@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    List<Member> findByName(String name);
+
     @Query(value =
             "SELECT * FROM member WHERE membership_number = :searchTerm " +
                     "OR name LIKE %:searchTerm% OR family_name LIKE %:searchTerm%", nativeQuery = true)

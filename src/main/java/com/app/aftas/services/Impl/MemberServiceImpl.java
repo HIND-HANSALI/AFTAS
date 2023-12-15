@@ -28,10 +28,7 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.save(member);
     }
 
-    @Override
-    public List<Member> searchMember(String name) {
-        return memberRepository.findByName(name);
-    }
+
 
     @Override
     public List<Member> findByNameOrMembershipNumberOrFamilyName(String searchTerm){
