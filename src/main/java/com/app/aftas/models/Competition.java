@@ -55,12 +55,13 @@ public class Competition {
     @Min(value = 0, message = "Total member must be greater than 0")
     private int totalMember;
 
-    @OneToMany(mappedBy = "competition")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<Ranking> rankings;
 
     @OneToMany(mappedBy = "competition")
-//    , cascade = CascadeType.ALL
+//    @JsonManagedReference
+    private List<Ranking> rankings;
+
+
+    @OneToMany(mappedBy = "competition")
     private List<Hunting> huntings;
 
 
