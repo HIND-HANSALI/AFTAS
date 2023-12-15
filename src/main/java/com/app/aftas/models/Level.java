@@ -19,7 +19,6 @@ public class Level {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int level;
     private String description;
 
     @NotNull(message = "Point cannot be null")
@@ -28,7 +27,7 @@ public class Level {
     private int points;
 
 
-    @OneToMany(mappedBy = "level")
+    @OneToMany(mappedBy = "level",cascade=CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Fish> fishes;
 }
