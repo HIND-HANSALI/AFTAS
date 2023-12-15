@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/competitions")
+
 public class CompetitionController {
 
     private CompetitionService competitionService;

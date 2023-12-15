@@ -1,6 +1,7 @@
 package com.app.aftas.controllers;
 
 import com.app.aftas.dto.MemberDto;
+import com.app.aftas.handlers.response.ResponseMessage;
 import com.app.aftas.models.Member;
 import com.app.aftas.services.MemberService;
 import jakarta.validation.Valid;
@@ -49,9 +50,9 @@ public class MemberController {
     public ResponseEntity searchMember(@RequestBody String name) {
         List<Member> members = memberService.findByNameOrMembershipNumberOrFamilyName(name);
         if(members.isEmpty()) {
-            return com.app.aftas.handlers.response.ResponseMessage.notFound("Member not found");
+            return ResponseMessage.notFound("Member not found");
         }else {
-            return com.app.aftas.handlers.response.ResponseMessage.ok(members, "Success");
+            return ResponseMessage.ok(members, "Success");
         }
     }
 
