@@ -1,12 +1,13 @@
 package com.app.aftas.services.Impl;
 
-import com.app.aftas.models.Ranking;
-import com.app.aftas.models.RankingId;
+import com.app.aftas.handlers.exception.ResourceNotFoundException;
+import com.app.aftas.models.*;
 import com.app.aftas.repositories.CompetitionRepository;
 import com.app.aftas.repositories.RankingRepository;
 import com.app.aftas.services.RankingService;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 @Service
 public class RankingServiceImpl implements RankingService {
@@ -39,10 +40,41 @@ public class RankingServiceImpl implements RankingService {
         }
         return ranking;
     }
-
     @Override
     public List<Ranking> getAllRankings() {
         return rankingRepository.findAll();
+    }
+
+    @Override
+    public List<Ranking> updateRankOfMemberInCompetition(String competitionCode) {
+        List<Ranking> rankings = rankingRepository.findAllByCompetitionCode(competitionCode);
+
+        // check if there is any ranking for the competition
+        if(rankings == null){
+            throw new ResourceNotFoundException("Rankings for competition code " + competitionCode + " not found");
+        }
+        // sort the rankings by score and update the rank
+        //rankings.sort((r1, r2) -> r2.getScore().compareTo(r1.getScore()));
+
+        rankings.sort(Comparator.comparing(Ranking::getScore, Comparator.nullsLast(Comparator.reverseOrder())));
+
+
+        // update the rank
+        for(int i = 0; i < rankings.size(); i++){
+            rankings.get(i).setRank(i + 1);
+        }
+
+        // save the rankings
+        return rankingRepository.saveAll(rankings);
+    }
+    @Override
+    public List<Ranking> findPodiumByCompetitionCode(String code) {
+        List<Ranking> rankings = rankingRepository.findTop3ByCompetitionCodeOrderByScoreDesc(code);
+        if (rankings.isEmpty()) {
+            throw new ResourceNotFoundException("No podium found");
+        } else {
+            return rankings;
+        }
     }
 
     @Override

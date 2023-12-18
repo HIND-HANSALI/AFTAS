@@ -43,6 +43,17 @@ public class RankingController {
         return ResponseMessage.ok(ranking,"Success");
     }
 
+    @GetMapping("/competitions/{code}/podium")
+    public ResponseEntity findPodiumByCompetitionCode(@PathVariable String code) {
+        List <Ranking> rankings=rankingService.findPodiumByCompetitionCode(code);
+        return ResponseMessage.ok(rankings,"Success");
+    }
+    @PutMapping("/updateRank/{code}")
+    public ResponseEntity updateRankOfMemberInCompetition(@PathVariable String code){
+        List <Ranking> rankings=rankingService.updateRankOfMemberInCompetition(code);
+        return ResponseMessage.ok(rankings,"Success");
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity updateRanking(@Valid @RequestBody UpdateRankingDto updateRankingDto, @PathVariable RankingId id) {
         Ranking ranking1 = rankingService.updateRanking(updateRankingDto.toRanking(), id);
