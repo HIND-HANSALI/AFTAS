@@ -3,8 +3,11 @@ package com.app.aftas.services.Impl;
 import com.app.aftas.handlers.exception.ResourceNotFoundException;
 import com.app.aftas.models.*;
 import com.app.aftas.repositories.HuntingRepository;
+import com.app.aftas.repositories.RankingRepository;
 import com.app.aftas.services.*;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class HuntingServiceImpl implements HuntingService {
@@ -14,6 +17,7 @@ public class HuntingServiceImpl implements HuntingService {
     private MemberService memberService;
     private FishService fishService;
     private RankingService rankingService;
+    private RankingRepository rankingRepository;
 
 
     public HuntingServiceImpl(HuntingRepository huntingRepository, CompetitionService competitionService, MemberService memberService, FishService fishService, RankingService rankingService) {
@@ -23,6 +27,8 @@ public class HuntingServiceImpl implements HuntingService {
         this.fishService = fishService;
         this.rankingService = rankingService;
     }
+    @Override
+    public List<Hunting> getAllHuntings(){return huntingRepository.findAll();}
 
 //    @Override
 //    public Hunting addHunting(Hunting hunting) {
@@ -37,6 +43,7 @@ public class HuntingServiceImpl implements HuntingService {
         Long fishId = hunting.getFish().getId();
         // check if competition exist
         Competition competition = competitionService.getCompetitionById(competitionId);
+
         // check if member exist
         Member member = memberService.getMemberById(memberId);
         // check if fish exist
@@ -57,7 +64,11 @@ public class HuntingServiceImpl implements HuntingService {
 
         Ranking ranking = rankingService.getRankingsByMemberIdAndCompetitionId(competitionId, memberId);
         ranking.setScore(ranking.getScore() + fish.getLevel().getPoints()); //check it after
-        rankingService.updateRanking(ranking,ranking.getId());
+
+
+
+        rankingService.updateRanking(ranking,ranking.getId()); //9dima
+
 
         if(existingHunting != null) {
             existingHunting.setNumberOfFish(existingHunting.getNumberOfFish() + 1);

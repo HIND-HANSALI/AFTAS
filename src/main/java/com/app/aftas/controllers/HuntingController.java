@@ -4,12 +4,15 @@ import com.app.aftas.dto.FishDTO;
 import com.app.aftas.dto.HuntingDto;
 import com.app.aftas.dto.HuntingUpdateDTO;
 import com.app.aftas.handlers.response.ResponseMessage;
+import com.app.aftas.models.Competition;
 import com.app.aftas.models.Fish;
 import com.app.aftas.models.Hunting;
 import com.app.aftas.services.HuntingService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/huntings")
@@ -24,6 +27,15 @@ public class HuntingController {
     @GetMapping("/{id}")
     public ResponseEntity getHuntingById(@PathVariable Long id) {
         return ResponseMessage.ok(huntingService.getHuntingById(id), "Success");
+    }
+    @GetMapping
+    public ResponseEntity getAllHuntings() {
+        List<Hunting> huntings = huntingService.getAllHuntings();
+        if(huntings.isEmpty()) {
+            return ResponseMessage.notFound("Hunting not found");
+        }else {
+            return ResponseMessage.ok(huntings, "Success");
+        }
     }
     @PostMapping
     public ResponseEntity addHuntingResult(@Valid @RequestBody HuntingDto hunting) {
