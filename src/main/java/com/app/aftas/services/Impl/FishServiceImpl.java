@@ -33,6 +33,10 @@ public class FishServiceImpl implements FishService {
         if(fishRepository.findByName(fish.getName()) != null) {
             throw new ResourceNotFoundException("Fish name " + fish.getName() + " already exist");
         }
+        // Check if the Level object is not null
+        if (fish.getLevel() == null) {
+            throw new ResourceNotFoundException("Level object is null");
+        }
 
         if(levelService.getLevelById(fish.getLevel().getId()) == null) {
             throw new ResourceNotFoundException("Level id " + fish.getLevel().getId() + " not found");

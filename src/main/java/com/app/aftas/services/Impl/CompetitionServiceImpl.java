@@ -11,10 +11,13 @@ import com.app.aftas.services.CompetitionService;
 import com.app.aftas.services.MemberService;
 import com.app.aftas.services.RankingService;
 import org.springframework.context.annotation.Lazy;
+
 import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,6 +42,20 @@ public class CompetitionServiceImpl implements CompetitionService {
     public List<Competition> getAllCompetitions() {
         return competitionRepository.findAll();
     }
+
+//    @Override
+//    public Page<Competition> findAll(Pageable pageable) {
+//        Page<Competition> competitionList = competitionRepository.findAll(pageable);
+//        return competitionList;
+//    }
+
+//    @Override
+//    public Page<Competition> findAll(Pageable pageable) {
+//        List<Competition> competitionDtoList = new ArrayList<>();
+//        competitionRepository.findAll(pageable)
+//                .forEach(competition -> competitionDtoList.add(competition));
+//        return new PageImpl<>(competitionDtoList, pageable, competitionRepository.count());
+//    }
 
 //    @Override
 //    public Competition addCompetition(Competition competition) {
@@ -130,6 +147,7 @@ public class CompetitionServiceImpl implements CompetitionService {
 
         // Set the values for the embedded ID
         ranking1.setId(RankingId.builder().competitionId(competitionId).memberId(memberId).build());
+
         // Register the member for the competition.
         return rankingService.addRanking(ranking1);
     }
