@@ -5,13 +5,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+
 import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
 
     @Query(value =
-            "SELECT * FROM member WHERE membership_number = :searchTerm " +
+            "SELECT * FROM member WHERE membership_number LIKE :searchTerm " +
                     "OR name LIKE %:searchTerm% OR family_name LIKE %:searchTerm%", nativeQuery = true)
     List<Member> findByMembershipNumberOrNameOrFamilyName(@Param("searchTerm") String searchTerm);
+//List<Member> findByMembershipNumberOrNameOrFamilyName(@Param("searchTerm") String searchTerm);
 }

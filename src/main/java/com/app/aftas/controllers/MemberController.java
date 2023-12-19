@@ -5,6 +5,8 @@ import com.app.aftas.handlers.response.ResponseMessage;
 import com.app.aftas.models.Member;
 import com.app.aftas.services.MemberService;
 import jakarta.validation.Valid;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +35,19 @@ public class MemberController {
             return com.app.aftas.handlers.response.ResponseMessage.notFound("Member not found");
         }else {
             return com.app.aftas.handlers.response.ResponseMessage.ok(members, "Success");
+        }
+    }
+    @GetMapping("/paginate")
+    public ResponseEntity getAllMembersPaginate(@RequestParam @DefaultValue("0") Integer page, @RequestParam Integer size) {
+        List<Member> members;
+        if (size != null)
+            members = memberService.getAllMembersPaginated(PageRequest.of(page, size));
+        else
+            members = memberService.getAllMembers();
+        if (members.isEmpty()) {
+            return ResponseMessage.notFound("Member not found");
+        } else {
+            return ResponseMessage.ok(members,"Success");
         }
     }
 
