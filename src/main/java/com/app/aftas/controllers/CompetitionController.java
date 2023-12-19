@@ -8,9 +8,12 @@ import com.app.aftas.models.Fish;
 import com.app.aftas.models.Ranking;
 import com.app.aftas.services.CompetitionService;
 import jakarta.validation.Valid;
+import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 
@@ -45,6 +48,21 @@ public class CompetitionController {
             return ResponseMessage.ok(competitions, "Success");
         }
     }
+
+
+//    @GetMapping("getAll")
+//    public ResponseEntity<List<Competition>> findAll(@ParameterObject Pageable pageable){
+//
+//        Page<Competition> competitionList = competitionService.findAll(pageable);
+//
+//        if (competitionList == null){
+//            return ResponseMessage.notFound("Not found any competition");
+//        }else {
+//            return ResponseMessage.ok(competitionList,"The competitions has retrieved successfully");
+//        }
+//
+//    }
+
 
     @PostMapping
     public ResponseEntity addCompetition( @RequestBody Competition competition) {

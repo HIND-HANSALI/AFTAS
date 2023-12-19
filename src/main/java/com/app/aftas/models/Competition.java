@@ -36,11 +36,11 @@ public class Competition {
     private LocalDate date;
 
     @NotNull(message = "Start time cannot be null")
-    @JsonFormat(pattern = "HH:mm:ss")
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime startTime;
 
     @NotNull(message = "Start time cannot be null")
-    @JsonFormat(pattern = "HH:mm:ss")
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime endTime;
 
     @NotNull(message = "Location cannot be null")
