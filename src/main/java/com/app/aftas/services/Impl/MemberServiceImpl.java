@@ -3,6 +3,7 @@ package com.app.aftas.services.Impl;
 import com.app.aftas.models.Member;
 import com.app.aftas.repositories.MemberRepository;
 import com.app.aftas.services.MemberService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -23,11 +24,16 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findAll();
     }
 
+
     @Override
     public Member addMember(Member member) {
         return memberRepository.save(member);
     }
 
+    @Override
+    public List<Member> getAllMembersPaginated(org.springframework.data.domain.Pageable pageable) {
+        return memberRepository.findAll(pageable).getContent();
+    }
 
 
     @Override
