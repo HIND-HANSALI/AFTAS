@@ -24,7 +24,7 @@ public class Ranking {
     private int score;
 
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     @MapsId("memberId")
@@ -33,8 +33,6 @@ public class Ranking {
     @ManyToOne
 //            (fetch = FetchType.EAGER)
 //    @JsonBackReference
-
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "competition_id")
     @MapsId("competitionId")

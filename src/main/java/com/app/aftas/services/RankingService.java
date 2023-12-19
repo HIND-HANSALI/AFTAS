@@ -9,7 +9,8 @@ public interface RankingService {
 
     List<Ranking> getAllRankings();
     List<Ranking> findPodiumByCompetitionCode(String code);
-//    void updateRankingScoreAndRank(Member member, Competition competition, Fish fish);
+    public List<Ranking> findPodiumByCompetitionId(Long id);
+    //    void updateRankingScoreAndRank(Member member, Competition competition, Fish fish);
     Ranking getRankingById(RankingId id);
     List<Ranking> updateRankOfMemberInCompetition(String competitionCode);
 

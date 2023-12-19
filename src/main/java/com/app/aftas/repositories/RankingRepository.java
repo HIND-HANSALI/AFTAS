@@ -14,7 +14,9 @@ public interface RankingRepository  extends JpaRepository<Ranking, RankingId> {
     Ranking findByMemberIdAndCompetitionId(Long memberId, Long competitionId);
 //    Optional<Ranking> findByCompetitionCodeAndMemberNum(String code, Integer num);
     List<Ranking> findAllByCompetitionCode(String competitionCode);
+    List<Ranking> findAllByCompetitionId(Long Id);
     List<Ranking> findByCompetitionIdOrderByScoreDesc(Long id);
     List<Ranking> findTop3ByCompetitionCodeOrderByScoreDesc(String code);
+    List<Ranking> findTop3ByCompetitionIdOrderByRankAsc(Long id);
 
 }

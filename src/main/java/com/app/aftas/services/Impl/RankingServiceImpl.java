@@ -77,6 +77,20 @@ public class RankingServiceImpl implements RankingService {
         }
     }
 
+
+    @Override
+    public List<Ranking> findPodiumByCompetitionId(Long id) {
+        List<Ranking> allRankings = rankingRepository.findAllByCompetitionId(id).stream().sorted(Comparator.comparingInt(Ranking::getScore).reversed()).toList();
+        allRankings.forEach(r -> r.setRank(allRankings.indexOf(r) + 1));
+        rankingRepository.saveAll(allRankings);
+        List<Ranking> rankings = rankingRepository.findTop3ByCompetitionIdOrderByRankAsc(id);
+        if (rankings.isEmpty()) {
+            throw new RuntimeException("No podium found");
+        } else {
+            return rankings;
+        }
+    }
+
     @Override
     public Ranking getRankingById(RankingId id) {
         return rankingRepository.findById(id).orElseThrow(() -> new RuntimeException("Ranking id " + id + " not found"));
