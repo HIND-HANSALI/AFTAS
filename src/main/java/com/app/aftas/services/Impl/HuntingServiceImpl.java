@@ -63,11 +63,11 @@ public class HuntingServiceImpl implements HuntingService {
 
 
         Ranking ranking = rankingService.getRankingsByMemberIdAndCompetitionId(competitionId, memberId);
-        ranking.setScore(ranking.getScore() + fish.getLevel().getPoints()); //check it after
+        ranking.setScore(ranking.getScore() +fish.getLevel().getPoints()); //check it after
 
 
 
-        rankingService.updateRanking(ranking,ranking.getId()); //9dima
+        rankingService.updateRanking(ranking,ranking.getId());
 
 
         if(existingHunting != null) {
