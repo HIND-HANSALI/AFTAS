@@ -75,6 +75,13 @@ public class CompetitionServiceImpl implements CompetitionService {
         if (competition.getStartTime().isAfter(competition.getEndTime())) {
             throw new OperationException("Start time must be before end time");
         }
+        // Check if the competition date is before today.
+        LocalDate currentDate = LocalDate.now();
+        LocalDate competitionDate = competition.getDate();
+        if (competitionDate.isBefore(currentDate)) {
+            throw new OperationException("Competition date must be in the future. Current date: " + currentDate + ", Competition date: " + competitionDate);
+        }
+
         // Generate a unique competition code in the pattern: ims-yy-MM-dd (location abbreviation - year-month-day).
         String code = generateCode(competition.getLocation(), competition.getDate());
         competition.setCode(code);
