@@ -2,29 +2,29 @@ version: '3'
 services:
   mysql:
     image: mysql:latest
-    container_name: mysqldb
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      MYSQL_DATABASE: db_aftas
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: aftasdb
+      MYSQL_ROOT_PASSWORD: root
+
     ports:
-      - "3308:3308"
+      - "3306:3306"
   aftasbackend:
-    image: aftasbackend:v1
+    build: ./AFTAS
     container_name: aftasbackend
-    restart: on-failure
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3308/aftas_db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/aftasdb
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_DATASOURCE_PASSWORD: root
     depends_on:
       - mysql
 
   aftasfrontend:
-    image: aftasfront:v1
+    build: ./AFTAS_Front
     container_name: aftasfront
     ports:
-      - "4200:80"
+      - "4200:4200"
     depends_on:
       - aftasbackend
