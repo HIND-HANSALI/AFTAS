@@ -11,6 +11,6 @@ public interface MemberService {
     Member addMember(Member member);
     List<Member> getAllMembersPaginated(Pageable pageable);
     List<Member> findByNameOrMembershipNumberOrFamilyName(String searchTerm);
-    Member updateMember(Member member, Long id);
+//    Member updateMember(Member member, Long id);
     void deleteMember(Long id);
 }

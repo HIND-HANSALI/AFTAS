@@ -71,15 +71,15 @@ public class MemberController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity updateMember(@RequestBody Member member, @PathVariable Long id) {
-        Member memberUpdated = memberService.updateMember(member, id);
-        if(memberUpdated == null) {
-            return com.app.aftas.handlers.response.ResponseMessage.badRequest("Member not updated");
-        }else {
-            return com.app.aftas.handlers.response.ResponseMessage.created(memberUpdated, "Member updated successfully");
-        }
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity updateMember(@RequestBody Member member, @PathVariable Long id) {
+//        Member memberUpdated = memberService.updateMember(member, id);
+//        if(memberUpdated == null) {
+//            return com.app.aftas.handlers.response.ResponseMessage.badRequest("Member not updated");
+//        }else {
+//            return com.app.aftas.handlers.response.ResponseMessage.created(memberUpdated, "Member updated successfully");
+//        }
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteMember(@PathVariable Long id) {

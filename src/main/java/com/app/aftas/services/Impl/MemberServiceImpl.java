@@ -41,17 +41,17 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByMembershipNumberOrNameOrFamilyName(searchTerm);
     }
 
-    @Override
-    public Member updateMember(Member member, Long id) {
-        Member existingMember = getMemberById(id);
-        existingMember.setName(member.getName());
-        existingMember.setFamilyName(member.getFamilyName());
-        existingMember.setAccessDate(member.getAccessDate());
-        existingMember.setNationality(member.getNationality());
-        existingMember.setIdentityDocumentType(member.getIdentityDocumentType());
-        existingMember.setIdentityNumber(member.getIdentityNumber());
-        return memberRepository.save(existingMember);
-    }
+//    @Override
+//    public Member updateMember(Member member, Long id) {
+//        Member existingMember = getMemberById(id);
+//        existingMember.setName(member.getName());
+//        existingMember.setFamilyName(member.getFamilyName());
+//        existingMember.setAccessDate(member.getAccessDate());
+//        existingMember.setNationality(member.getNationality());
+//        existingMember.setIdentityDocumentType(member.getIdentityDocumentType());
+//        existingMember.setIdentityNumber(member.getIdentityNumber());
+//        return memberRepository.save(existingMember);
+//    }
 
     @Override
     public void deleteMember(Long id) {
