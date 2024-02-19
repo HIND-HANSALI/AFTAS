@@ -14,11 +14,11 @@ import java.time.LocalDate;
 public record MemberDto (
         @NotNull(message = "Name is required")
         @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
-        String name,
+        String userName,
 
-        @NotNull(message = "Family name is required")
-        @Size(min = 2, max = 50, message = "Family name must be between 2 and 50 characters")
-        String familyName,
+//        @NotNull(message = "Family name is required")
+//        @Size(min = 2, max = 50, message = "Family name must be between 2 and 50 characters")
+//        String familyName,
 
         @PastOrPresent(message = "Access date must be in the past or present")
         @Temporal(TemporalType.DATE)
@@ -38,8 +38,8 @@ public record MemberDto (
 ){
         public Member toMember(){
                 return Member.builder()
-                        .name(name)
-                        .familyName(familyName)
+                        .userName(userName)
+//                        .familyName(familyName)
                         .nationality(nationality)
                         .identityDocumentType(identityDocumentType).
                         identityNumber(identityNumber)
