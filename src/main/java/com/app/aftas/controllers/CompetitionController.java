@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Pageable;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/competitions")
-
+@PreAuthorize("hasRole('MEMBER') && hasRole('JURY')")
 public class CompetitionController {
 
     private CompetitionService competitionService;
@@ -83,6 +84,7 @@ public class CompetitionController {
             return ResponseMessage.created(competition1, "Competition updated successfully");
         }
     }
+    @PreAuthorize("hasAnyAuthority('REGISTER_MEMBER_TO_COMPETITION')")
     @PostMapping("/register-member")
     public ResponseEntity registerMemberForCompetition(@Valid @RequestBody RankingDTO registerMember) {
         Ranking ranking = competitionService.registerMemberForCompetition(registerMember.toRanking());

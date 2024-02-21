@@ -8,12 +8,14 @@ import com.app.aftas.models.RankingId;
 import com.app.aftas.services.RankingService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/rankings")
+@PreAuthorize("hasRole('MEMBER')")
 public class RankingController {
     private RankingService rankingService;
 
@@ -36,7 +38,7 @@ public class RankingController {
         Ranking ranking = rankingService.getRankingById(id);
         return ResponseMessage.ok(ranking,"Success");
     }
-
+    @PreAuthorize("hasAnyAuthority('VIEW_RANKING_BY_MEMBER_AND_COMPETITION')")
     @GetMapping("/{competitionId}/{memberId}")
     public ResponseEntity getRankingsByMemberIdAndCompetitionId(@PathVariable Long competitionId, @PathVariable Long memberId) {
         Ranking ranking = rankingService.getRankingsByMemberIdAndCompetitionId(competitionId, memberId);
