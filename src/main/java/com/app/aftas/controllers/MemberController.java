@@ -8,12 +8,14 @@ import jakarta.validation.Valid;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/members")
+@PreAuthorize("hasRole('MANAGER')")
 public class MemberController {
 
     private final MemberService memberService;

@@ -5,12 +5,15 @@ import com.app.aftas.models.Level;
 import com.app.aftas.services.LevelService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/levels")
+//@PreAuthorize("hasRole('ROLE_MANAGER')")
+
 public class LevelController {
     private LevelService levelService;
 
@@ -18,6 +21,8 @@ public class LevelController {
         this.levelService = levelService;
     }
 
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
+//    @PreAuthorize("hasAnyAuthority('VIEW_LEVELS')")
     @GetMapping
     public ResponseEntity getAllLevels() {
         List<Level> levels = levelService.getAllLevels();
@@ -27,7 +32,7 @@ public class LevelController {
             return ResponseMessage.ok(levels, "Success");
         }
     }
-
+    @PreAuthorize("hasAnyAuthority('VIEW_ONE_LEVEL')")
     @GetMapping("/{id}")
     public ResponseEntity getLevelById(@PathVariable Long id) {
         Level level = levelService.getLevelById(id);
@@ -38,7 +43,7 @@ public class LevelController {
         }
     }
 
-
+    @PreAuthorize("hasAnyAuthority('CREATE_LEVEL')")
     @PostMapping
     public ResponseEntity addLevel(@Valid @RequestBody Level level) {
         try {
@@ -54,7 +59,7 @@ public class LevelController {
             return ResponseMessage.badRequest("Internal server error");
         }
     }
-
+    @PreAuthorize("hasAnyAuthority('UPDATE_LEVEL')")
     @PutMapping("/{id}")
     public ResponseEntity updateLevel(@Valid @RequestBody Level level, @PathVariable Long id) {
         Level level1 = levelService.updateLevel(level, id);
@@ -64,7 +69,7 @@ public class LevelController {
             return ResponseMessage.created(level1, "Level updated successfully");
         }
     }
-
+    @PreAuthorize("hasAnyAuthority('DELETE_LEVEL')")
     @DeleteMapping("/{id}")
     public ResponseEntity deleteLevel(@PathVariable Long id) {
         Level level = levelService.getLevelById(id);
