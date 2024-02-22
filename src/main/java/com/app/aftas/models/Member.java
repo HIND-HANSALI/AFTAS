@@ -13,9 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Data
@@ -79,11 +77,23 @@ public class Member implements UserDetails {
     @ManyToOne
     private Role role;
 
+    @OneToMany(mappedBy = "member")
+    private List<Token> tokens;
+
+
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return role.getAuthorities().stream().map(authority -> new SimpleGrantedAuthority(authority.getName().name())).toList();
+//    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities().stream().map(authority -> new SimpleGrantedAuthority(authority.getName().name())).toList();
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority( role.getName()));//"ROLE_" +
+        authorities.addAll(role.getAuthorities().stream().map(authority -> new SimpleGrantedAuthority(authority.getName().name())).toList());
+//        System.out.println(authorities);
+        return authorities;
     }
-
     @Override
     public String getPassword() {
         return password;

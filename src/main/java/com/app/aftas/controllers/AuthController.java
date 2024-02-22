@@ -4,10 +4,13 @@ import com.app.aftas.dto.request.AuthenticationRequest;
 import com.app.aftas.dto.request.RegisterRequest;
 import com.app.aftas.dto.response.AuthenticationResponse;
 import com.app.aftas.services.AuthenticationService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -28,6 +31,11 @@ public class AuthController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         return ResponseEntity.ok(authenticationService.authenticate(request));
+    }
+    @PostMapping("/refresh-token")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        authenticationService.refreshToken(request, response);
     }
 
     @GetMapping("/test")

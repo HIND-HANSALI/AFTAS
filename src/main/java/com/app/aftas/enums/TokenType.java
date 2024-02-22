@@ -1,2 +1,5 @@
-package com.app.aftas.enums;public enum TokenType {
+package com.app.aftas.enums;
+
+public enum TokenType {
+    BEARER
 }
