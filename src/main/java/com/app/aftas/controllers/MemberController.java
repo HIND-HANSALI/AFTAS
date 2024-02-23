@@ -32,26 +32,26 @@ public class MemberController {
 
     @GetMapping
     public ResponseEntity getAllMembers() {
-        List<Member> members = memberService.getAllMembers();
+        List<MemberDto> members = memberService.getAllMembers();
         if(members.isEmpty()) {
             return com.app.aftas.handlers.response.ResponseMessage.notFound("Member not found");
         }else {
             return com.app.aftas.handlers.response.ResponseMessage.ok(members, "Success");
         }
     }
-    @GetMapping("/paginate")
-    public ResponseEntity getAllMembersPaginate(@RequestParam @DefaultValue("0") Integer page, @RequestParam Integer size) {
-        List<Member> members;
-        if (size != null)
-            members = memberService.getAllMembersPaginated(PageRequest.of(page, size));
-        else
-            members = memberService.getAllMembers();
-        if (members.isEmpty()) {
-            return ResponseMessage.notFound("Member not found");
-        } else {
-            return ResponseMessage.ok(members,"Success");
-        }
-    }
+//    @GetMapping("/paginate")
+//    public ResponseEntity getAllMembersPaginate(@RequestParam @DefaultValue("0") Integer page, @RequestParam Integer size) {
+//        List<Member> members;
+//        if (size != null)
+//            members = memberService.getAllMembersPaginated(PageRequest.of(page, size));
+//        else
+//            members = memberService.getAllMembers();
+//        if (members.isEmpty()) {
+//            return ResponseMessage.notFound("Member not found");
+//        } else {
+//            return ResponseMessage.ok(members,"Success");
+//        }
+//    }
 
     @PostMapping
     public ResponseEntity addMember(@Valid @RequestBody MemberDto memberDTO) {

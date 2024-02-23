@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/levels")
-//@PreAuthorize("hasRole('ROLE_MANAGER')")
+@PreAuthorize("hasRole('ROLE_MANAGER')")
 
 public class LevelController {
     private LevelService levelService;

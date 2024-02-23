@@ -7,11 +7,13 @@ import com.app.aftas.services.FishService;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
 @RequestMapping("/api/fishes")
+@PreAuthorize("hasRole('JURY') || hasRole('ROLE_MANAGER')")
 public class FishController {
     private FishService fishService;
 

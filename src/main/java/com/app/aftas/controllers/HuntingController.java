@@ -10,12 +10,14 @@ import com.app.aftas.models.Hunting;
 import com.app.aftas.services.HuntingService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/huntings")
+@PreAuthorize("hasRole('JURY') || hasRole('ROLE_MANAGER')")
 public class HuntingController {
     private HuntingService huntingService;
 

@@ -1,5 +1,6 @@
 package com.app.aftas.controllers;
 
+import com.app.aftas.dto.RankingResponseDTO;
 import com.app.aftas.dto.UpdateRankingDto;
 import com.app.aftas.handlers.response.ResponseMessage;
 import com.app.aftas.models.Fish;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/rankings")
-@PreAuthorize("hasRole('MEMBER')")
+//@PreAuthorize("hasRole('MEMBER') || hasRole('JURY') || hasRole('ROLE_MANAGER')")
 public class RankingController {
     private RankingService rankingService;
 
@@ -25,7 +26,7 @@ public class RankingController {
     @GetMapping
     public ResponseEntity getAllRankings() {
 
-        List<Ranking> rankings = rankingService.getAllRankings();
+        List<RankingResponseDTO> rankings = rankingService.getAllRankings();
         if(rankings.isEmpty()) {
             return ResponseMessage.notFound("Ranking not found");
         }else {
@@ -52,7 +53,7 @@ public class RankingController {
 //    }
     @GetMapping("/competitions/{id}/podium")
     public ResponseEntity findPodiumByCompetitionId(@PathVariable Long id) {
-        List <Ranking> rankings=rankingService.findPodiumByCompetitionId(id);
+        List <RankingResponseDTO> rankings=rankingService.findPodiumByCompetitionId(id);
         return ResponseMessage.ok(rankings,"Success");
     }
 

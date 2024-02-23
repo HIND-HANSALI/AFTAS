@@ -1,12 +1,13 @@
 package com.app.aftas.services;
 
+import com.app.aftas.dto.MemberDto;
 import com.app.aftas.models.Member;
 
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface MemberService {
-    List<Member> getAllMembers();
+    List<MemberDto> getAllMembers();
     Member getMemberById(Long id);
     Member addMember(Member member);
     List<Member> getAllMembersPaginated(Pageable pageable);

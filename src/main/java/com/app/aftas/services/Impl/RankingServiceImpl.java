@@ -1,5 +1,6 @@
 package com.app.aftas.services.Impl;
 
+import com.app.aftas.dto.RankingResponseDTO;
 import com.app.aftas.handlers.exception.ResourceNotFoundException;
 import com.app.aftas.models.*;
 import com.app.aftas.repositories.CompetitionRepository;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class RankingServiceImpl implements RankingService {
 
@@ -40,11 +43,28 @@ public class RankingServiceImpl implements RankingService {
         }
         return ranking;
     }
+//    @Override
+//    public List<Ranking> getAllRankings() {
+//        return rankingRepository.findAll();
+//    }
+
     @Override
-    public List<Ranking> getAllRankings() {
-        return rankingRepository.findAll();
+    public List<RankingResponseDTO> getAllRankings() {
+        List<Ranking> rankings = rankingRepository.findAll();
+        return rankings.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
+        private RankingResponseDTO mapToDTO(Ranking ranking) {
+            return new RankingResponseDTO(
+
+                    ranking.getCompetition().getId(),
+                    ranking.getMember().getId(),
+                    ranking.getRank(),
+                    ranking.getScore()
+            );
+        }
     @Override
     public List<Ranking> updateRankOfMemberInCompetition(String competitionCode) {
         List<Ranking> rankings = rankingRepository.findAllByCompetitionCode(competitionCode);
@@ -79,7 +99,7 @@ public class RankingServiceImpl implements RankingService {
 
 
     @Override
-    public List<Ranking> findPodiumByCompetitionId(Long id) {
+    public List<RankingResponseDTO> findPodiumByCompetitionId(Long id) {
         List<Ranking> allRankings = rankingRepository.findAllByCompetitionId(id).stream().sorted(Comparator.comparingInt(Ranking::getScore).reversed()).toList();
         allRankings.forEach(r -> r.setRank(allRankings.indexOf(r) + 1));
         rankingRepository.saveAll(allRankings);
@@ -87,7 +107,9 @@ public class RankingServiceImpl implements RankingService {
         if (rankings.isEmpty()) {
             throw new RuntimeException("No podium found");
         } else {
-            return rankings;
+            return rankings.stream()
+                    .map(this::mapToDTO)
+                    .collect(Collectors.toList());
         }
     }
 
