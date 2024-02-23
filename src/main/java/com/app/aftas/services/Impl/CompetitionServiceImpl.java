@@ -1,5 +1,6 @@
 package com.app.aftas.services.Impl;
 
+import com.app.aftas.dto.CompetitionDTO;
 import com.app.aftas.handlers.exception.OperationException;
 import com.app.aftas.handlers.exception.ResourceNotFoundException;
 import com.app.aftas.models.Competition;
@@ -7,28 +8,34 @@ import com.app.aftas.models.Member;
 import com.app.aftas.models.Ranking;
 import com.app.aftas.models.RankingId;
 import com.app.aftas.repositories.CompetitionRepository;
+import com.app.aftas.repositories.MemberRepository;
 import com.app.aftas.services.CompetitionService;
 import com.app.aftas.services.MemberService;
 import com.app.aftas.services.RankingService;
 import org.springframework.context.annotation.Lazy;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CompetitionServiceImpl implements CompetitionService {
     private final CompetitionRepository competitionRepository;
     private final MemberService memberService;
     private final RankingService rankingService;
+    private final MemberRepository memberRepository;
 
-    public CompetitionServiceImpl(CompetitionRepository competitionRepository, MemberService memberService, RankingService rankingService) {
+    public CompetitionServiceImpl(CompetitionRepository competitionRepository, MemberService memberService, RankingService rankingService,MemberRepository memberRepository) {
         this.competitionRepository = competitionRepository;
         this.memberService = memberService;
         this.rankingService = rankingService;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -36,9 +43,79 @@ public class CompetitionServiceImpl implements CompetitionService {
         return competitionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Competition id " + id + " not found"));
     }
 
+//    @Override
+//    public List<Competition> getAllCompetitions() {
+//        return competitionRepository.findAll();
+//    }
     @Override
-    public List<Competition> getAllCompetitions() {
-        return competitionRepository.findAll();
+    public List<CompetitionDTO> getAllCompetitions() {
+        List<Competition> competitions = competitionRepository.findAll();
+        return competitions.stream()
+                .map(this::convertToCompetitionDTO)
+                .collect(Collectors.toList());
+    }
+
+    private CompetitionDTO convertToCompetitionDTO(Competition competition) {
+        return new CompetitionDTO(
+                competition.getId(),
+                competition.getCode(),
+                competition.getDate(),
+                competition.getStartTime(),
+                competition.getEndTime(),
+                competition.getLocation(),
+                competition.getAmount(),
+                competition.getTotalMember()
+        );
+    }
+    @Override
+    public List<CompetitionDTO> getCompetitionsForAuthenticatedUser() {
+        //Retrieve the Authentication object
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Extract the email or username of the authenticated user
+        String userEmail = authentication.getName(); // Assuming email is used for authentication
+        String message = "Competitions for current user: " + userEmail;
+        // Step 3: Query the database to find the member by email
+        Member member = memberRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("Member not found for email: " + userEmail));
+
+        // Retrieve the competitions associated with the member's rankings
+        List<Competition> competitions = member.getRankings().stream()
+                .map(Ranking::getCompetition)
+                .distinct()
+                .toList();
+
+        if (competitions.isEmpty()) {
+            throw new RuntimeException("Member with email " + userEmail + " is not in any competition");
+        }
+        // Convert Competition entities to CompetitionDTOs
+        List<CompetitionDTO> competitionDTOs = competitions.stream()
+                .map(this::convertToCompetitionDTO)
+                .collect(Collectors.toList());
+
+        return competitionDTOs;
+    }
+    @Override
+    public List<CompetitionDTO> getCompetitionsByEmail(String email) {
+        // Find the member by email
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Member not found for email: " + email));
+
+        // Get the list of competitions associated with the member's rankings
+        List<Competition> competitions = member.getRankings().stream()
+                .map(Ranking::getCompetition)
+                .distinct()
+                .toList();
+
+        if (competitions.isEmpty()) {
+            throw new RuntimeException("Member with email " + email + " is not in any competition");
+        }
+        // Convert Competition entities to CompetitionDTOs
+        List<CompetitionDTO> competitionDTOs = competitions.stream()
+                .map(this::convertToCompetitionDTO)
+                .collect(Collectors.toList());
+
+        return competitionDTOs;
     }
 
 //    @Override

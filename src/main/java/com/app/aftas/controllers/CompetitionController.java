@@ -1,5 +1,6 @@
 package com.app.aftas.controllers;
 
+import com.app.aftas.dto.CompetitionDTO;
 import com.app.aftas.dto.FishDTO;
 import com.app.aftas.dto.RankingDTO;
 import com.app.aftas.handlers.response.ResponseMessage;
@@ -16,11 +17,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
 @RequestMapping("/api/competitions")
-@PreAuthorize("hasRole('MEMBER') && hasRole('JURY')")
+//@PreAuthorize("hasRole('ROLE_MEMBER') || hasRole('ROLE_JURY') || hasRole('ROLE_MANAGER')")
 public class CompetitionController {
 
     private CompetitionService competitionService;
@@ -42,11 +44,33 @@ public class CompetitionController {
 
     @GetMapping
     public ResponseEntity getAllCompetitions() {
-        List<Competition> competitions = competitionService.getAllCompetitions();
+        List<CompetitionDTO> competitions = competitionService.getAllCompetitions();
         if(competitions.isEmpty()) {
             return ResponseMessage.notFound("Competition not found");
         }else {
             return ResponseMessage.ok(competitions, "Success");
+        }
+    }
+    @GetMapping("/current-user")
+    public ResponseEntity<List<CompetitionDTO>> getCompetitionsForCurrentUser() {
+        try {
+            // Retrieve competitions associated with the currently authenticated user
+            List<CompetitionDTO> competitions = competitionService.getCompetitionsForAuthenticatedUser();
+
+            return ResponseEntity.ok().body(competitions);
+        } catch (RuntimeException e) {
+            return ResponseMessage.notFound("Competition not found");
+        }
+    }
+//    @PreAuthorize("hasAnyAuthority('VIEW_COMPETITIONS')")
+    @PostMapping("/member")
+    public ResponseEntity<List<CompetitionDTO>> getCompetitionsByEmail(@RequestBody Map<String, String> request) {
+        try {
+            String email = request.get("email");
+            List<CompetitionDTO> competitions = competitionService.getCompetitionsByEmail(email);
+            return ResponseEntity.ok().body(competitions);
+        } catch (RuntimeException e) {
+            return ResponseMessage.notFound("Competition not found");
         }
     }
 
@@ -84,7 +108,7 @@ public class CompetitionController {
             return ResponseMessage.created(competition1, "Competition updated successfully");
         }
     }
-    @PreAuthorize("hasAnyAuthority('REGISTER_MEMBER_TO_COMPETITION')")
+//    @PreAuthorize("hasAnyAuthority('REGISTER_MEMBER_TO_COMPETITION')")
     @PostMapping("/register-member")
     public ResponseEntity registerMemberForCompetition(@Valid @RequestBody RankingDTO registerMember) {
         Ranking ranking = competitionService.registerMemberForCompetition(registerMember.toRanking());
